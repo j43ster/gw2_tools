@@ -102,7 +102,8 @@ def summarize_market_data(processed_files: List[str], item_metadata: Dict[int, D
         'demand': latest_metrics['demand'],
         'daily_sold_est': daily_sold,
         'daily_bought_est': daily_bought,
-        'timestamp': latest_metrics['timestamp']
+        'timestamp': latest_metrics['timestamp'],
+        'rarity': item_metadata[item_id_str]['rarity'] if item_id_str in item_metadata else "N/A"
     }
 
   return summary
