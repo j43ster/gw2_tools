@@ -7,7 +7,7 @@ import os
 from typing import Any, Dict, List, Optional, Tuple
 from pathlib import Path
 
-_TIMESTAMP_FORMAT = "%Y-%m-%dT%H:%M:%S.%f"
+_TIMESTAMP_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z"
 
 
 def get_fill_volume(prev_orders: List[Dict[str, int]],
@@ -27,8 +27,10 @@ def get_fill_volume(prev_orders: List[Dict[str, int]],
 def generate_market_state(snap_prev: Dict[str, Any],
                           snap_curr: Dict[str, Any]) -> Dict[int, Dict[str, Any]]:
   """Processes two snapshots into a state with precise time deltas."""
-  t1 = datetime.datetime.strptime(snap_prev['timestamp'], _TIMESTAMP_FORMAT)
-  t2 = datetime.datetime.strptime(snap_curr['timestamp'], _TIMESTAMP_FORMAT)
+  #t1 = datetime.datetime.strptime(snap_prev['timestamp'], _TIMESTAMP_FORMAT)
+  #t1 = datetime.datetime.strptime(snap_prev['timestamp'], _TIMESTAMP_FORMAT)
+  t1 = datetime.datetime.fromisoformat(snap_prev['timestamp'])
+  t2 = datetime.datetime.fromisoformat(snap_curr['timestamp'])
   duration_seconds = int((t2 - t1).total_seconds())
 
   prev_listings = {item['id']: item for item in snap_prev['listings']}

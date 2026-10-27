@@ -5,7 +5,12 @@ This program fetches full commerce listings periodically and maintains a
 local library of crafting recipes, saving both to JSON format.
 """
 
-import datetime
+from datetime import datetime
+try:
+  from zoneinfo import ZoneInfo
+except ImportError:
+  from backports.zoneinfo import ZoneInfo
+
 import json
 import logging
 import os
@@ -27,7 +32,8 @@ def take_market_snapshot(listings_snapshot_dir):
   # currently on the trading post.
   market_listings = asyncio.run(fetch_gw2_data("commerce/listings"))
 
-  now = datetime.datetime.utcnow()
+  la_tz = ZoneInfo("America/Los_Angeles")
+  now = datetime.now(la_tz)
   timestamp = now.strftime("%Y%m%d_%H%M%S")
   filename = f"listings_{timestamp}.json"
   file_path = os.path.join(listings_snapshot_dir, filename)
